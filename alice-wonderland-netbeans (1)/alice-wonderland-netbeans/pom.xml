@@ -15,7 +15,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>21</javafx.version>
-        <exec.mainClass>com.alice.MainApp</exec.mainClass>
+        <exec.mainClass>com.alice.Launcher</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -67,7 +67,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.alice.MainApp</mainClass>
+                    <mainClass>com.alice.Launcher</mainClass>
                 </configuration>
             </plugin>
         </plugins>

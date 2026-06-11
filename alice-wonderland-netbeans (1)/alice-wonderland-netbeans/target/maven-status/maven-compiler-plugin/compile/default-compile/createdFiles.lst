@@ -12,6 +12,7 @@ com\alice\model\Jogador.class
 com\alice\controller\GameplayController$2.class
 com\alice\controller\UpgradesController.class
 com\alice\controller\MenuController.class
+com\alice\Launcher.class
 com\alice\controller\LojaController.class
 com\alice\controller\CreditosController.class
 com\alice\controller\RankingController.class

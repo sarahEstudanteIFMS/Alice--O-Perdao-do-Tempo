@@ -57,10 +57,13 @@ mvn clean javafx:run
 
 ## 5. Erros comuns e soluções
 
-**"Error: JavaFX runtime components are missing"**
-→ Acontece se você rodar a classe `MainApp` direto (botão de play do arquivo)
-em vez de usar o Run do projeto / `mvn exec:java`. Use sempre o Run do projeto
-ou os comandos Maven acima, pois eles já incluem o JavaFX no classpath.
+**"Error: JavaFX runtime components are missing" / "Command execution failed"
+ao usar exec:java ou o botão Run do NetBeans**
+→ Já corrigido neste projeto: foi adicionada a classe `com.alice.Launcher`,
+que é usada como Main-Class pelo `exec-maven-plugin`. Ela não estende
+`Application`, então a JVM não bloqueia a execução por falta de
+`--module-path`. Se o erro persistir, rode `mvn clean compile` antes, ou use
+diretamente `mvn clean javafx:run`.
 
 **"package javafx.application does not exist" / erros vermelhos no editor**
 → As dependências do Maven ainda não foram baixadas. Botão direito no projeto
