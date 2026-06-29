@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="12.0" prefWidth="350" prefHeight="400" styleClass="root-menu" stylesheets="@../css/estilo.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.alice.controller.InventarioController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label styleClass="titulo-pequeno" text="🎒 Inventário" />
+    <Label fx:id="lblJogador" styleClass="label-comum" text="Inventário de Alice" />
+    <Label fx:id="lblTitulo" styleClass="label-comum" text="" />
+
+    <ListView fx:id="listaItens" prefHeight="250" prefWidth="300" />
+
+    <Button onAction="#onFechar" styleClass="botao-sair" text="Fechar" />
+
+</VBox>

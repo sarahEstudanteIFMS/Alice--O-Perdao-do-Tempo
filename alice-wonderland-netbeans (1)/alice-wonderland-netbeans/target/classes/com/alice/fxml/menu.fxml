@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="18.0" styleClass="root-menu" stylesheets="@../css/estilo.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.alice.controller.MenuController">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label styleClass="titulo" text="País das Maravilhas" />
+    <Label styleClass="subtitulo" text="O Tempo Esquecido — Em busca do perdão" />
+
+    <VBox alignment="CENTER" spacing="10" styleClass="caixa-menu">
+        <Label styleClass="label-comum" text="Digite seu nome, viajante:" />
+        <TextField fx:id="campoNome" maxWidth="240" promptText="Seu nome..." styleClass="campo-texto" />
+
+        <Button maxWidth="220" onAction="#onJogar" styleClass="botao-principal" text="🎩 Jogar" />
+        <Button maxWidth="220" onAction="#onRanking" styleClass="botao-secundario" text="🏆 Ranking" />
+        <Button maxWidth="220" onAction="#onCreditos" styleClass="botao-secundario" text="📜 Créditos" />
+        <Button maxWidth="220" onAction="#onEncerrar" styleClass="botao-sair" text="🚪 Encerrar" />
+    </VBox>
+
+    <Label styleClass="rodape" text="&quot;Não estou louca. Minha realidade é apenas diferente da sua.&quot;" />
+</VBox>
