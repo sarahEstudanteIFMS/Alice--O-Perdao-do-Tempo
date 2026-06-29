@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="18.0" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="aliceoretorno.controller.Loja"
+      style="-fx-background-color: #1a0a2e; -fx-padding: 30;">
+
+    <Label text="🛒  Bazar do Tempo"
+           style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #d4a8ff;"/>
+
+    <Label fx:id="lblMoedas" text="Engrenagens: 0"
+           style="-fx-font-size: 15px; -fx-text-fill: #ffdd55;"/>
+
+    <VBox spacing="8" alignment="CENTER"
+          style="-fx-background-color: #2d0f4e; -fx-padding: 16; -fx-background-radius: 10;">
+        <Label text="⏱  Tempo Extra (+15s)"
+               style="-fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Label text="Preço: 15 Engrenagens  •  Adiciona 1 item à sua Bolsa"
+               style="-fx-font-size: 12px; -fx-text-fill: #aaaaaa;"/>
+        <Button text="Comprar" onAction="#handleComprarTempo" prefWidth="180"
+                style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
+    </VBox>
+
+    <Label fx:id="lblMensagem" text=""
+           style="-fx-font-size: 13px; -fx-text-fill: #88ff88;"/>
+
+    <Button text="↩  Voltar ao Menu" onAction="#handleVoltar" prefWidth="200"
+            style="-fx-background-color: #4a0000; -fx-text-fill: #ffaaaa; -fx-font-size: 12px; -fx-background-radius: 8;"/>
+</VBox>

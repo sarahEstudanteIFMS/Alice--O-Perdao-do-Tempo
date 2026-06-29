@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="18.0" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="aliceoretorno.controller.Inventory"
+      style="-fx-background-color: #1a0a2e; -fx-padding: 30; -fx-min-width: 300;">
+
+    <Label text="🎒  Bolsa de Alice"
+           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #d4a8ff;"/>
+
+    <Label fx:id="lblQtdItens" text="Tempo Extra (+15s): 0 unidades"
+           style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+
+    <Button fx:id="btnConsumir" text="⏱  Usar Tempo Extra (+15s)" onAction="#handleUsarItem"
+            prefWidth="220"
+            style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
+
+    <Button text="✖  Fechar" onAction="#handleFechar" prefWidth="220"
+            style="-fx-background-color: #4a0000; -fx-text-fill: #ffaaaa; -fx-font-size: 13px; -fx-background-radius: 8;"/>
+</VBox>

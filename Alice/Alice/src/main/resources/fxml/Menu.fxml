@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="18.0" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="aliceoretorno.controller.Menu"
+      style="-fx-background-color: #1a0a2e; -fx-padding: 40;">
+
+    <Label text="Alice: O Retorno"
+           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #d4a8ff;"/>
+
+    <Label text="O Tempo é o seu maior inimigo."
+           style="-fx-font-size: 14px; -fx-text-fill: #a888cc; -fx-font-style: italic;"/>
+
+    <VBox spacing="10" alignment="CENTER">
+        <Button text="▶  Começar / Continuar" onAction="#handleComecar" prefWidth="240"
+                style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;"/>
+        <Button text="🏆  Upgrades e Ranking"  onAction="#handleRanking" prefWidth="240"
+                style="-fx-background-color: #3d1a6e; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;"/>
+        <Button text="🛒  Loja"                onAction="#handleLoja"    prefWidth="240"
+                style="-fx-background-color: #3d1a6e; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;"/>
+        <Button text="🎬  Créditos"            onAction="#handleCreditos" prefWidth="240"
+                style="-fx-background-color: #3d1a6e; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;"/>
+        <Button text="✖  Encerrar"             onAction="#handleEncerrar" prefWidth="240"
+                style="-fx-background-color: #4a0000; -fx-text-fill: #ffaaaa; -fx-font-size: 14px; -fx-background-radius: 8;"/>
+    </VBox>
+</VBox>
