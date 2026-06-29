@@ -1,13 +1,149 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package aliceoretorno.controller;
 
-/**
- *
- * @author sarah
- */
+import aliceoretorno.model.Partida;
+import aliceoretorno.model.Enigma;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import java.io.IOException;
+
 public class Gameplay {
-    
+
+    @FXML private Label lblEnigma;
+    @FXML private Label lblTimer;
+    @FXML private Label lblSanidade;
+    @FXML private Label lblNivel;
+    @FXML private TextField txtResposta;
+
+    private Timeline timeline;
+    private int tempoRestante;
+    private int tempoMaximoDaRodada;
+
+    @FXML
+    public void initialize() {
+        tempoMaximoDaRodada = Partida.jogadorLogado.getTempoBaseUpgrade();
+        tempoRestante = tempoMaximoDaRodada;
+        
+        atualizarInterface();
+        inicializarTimer();
+    }
+
+    private void atualizarInterface() {
+        Partida run = Partida.runAtual;
+        lblNivel.setText("Nível: " + run.getNivelAtual() + " / 5");
+        lblSanidade.setText("Sanidade: " + run.getSanidadeAtual());
+        lblEnigma.setText(run.getEnigmaAtual().getPergunta());
+        txtResposta.clear();
+    }
+
+    private void inicializarTimer() {
+        if (timeline != null) timeline.stop();
+        lblTimer.setText("Tempo: " + tempoRestante + "s");
+        
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            tempoRestante--;
+            lblTimer.setText("Tempo: " + tempoRestante + "s");
+            if (tempoRestante <= 0) {
+                timeline.stop();
+                processarDerrotaPorTempo();
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    @FXML
+    void handleConfirmar(ActionEvent event) throws IOException {
+        Partida run = Partida.runAtual;
+        Enigma enigma = run.getEnigmaAtual();
+        
+        if (enigma.validarResposta(txtResposta.getText())) {
+            timeline.stop();
+            int tempoGasto = tempoMaximoDaRodada - tempoRestante;
+            
+            if (tempoGasto < 10) {
+                run.somarEngrenagens(10); 
+                Partida.jogadorLogado.setEngrenagens(Partida.jogadorLogado.getEngrenagens() + 10);
+            }
+            
+            run.setNivelAtual(run.getNivelAtual() + 1);
+            
+            if (run.getNivelAtual() == 5) {
+                irParaBoss(event);
+            } else {
+                tempoRestante = tempoMaximoDaRodada;
+                atualizarInterface();
+                timeline.play();
+            }
+        } else {
+            txtResposta.setStyle("-fx-border-color: red; -fx-background-color: #ffcccc;");
+        }
+    }
+
+    private void processarDerrotaPorTempo() {
+        Partida run = Partida.runAtual;
+        run.setSanidadeAtual(run.getSanidadeAtual() - 1);
+        
+        if (run.getSanidadeAtual() <= 0) {
+            run.resetarRunDaDerrota();
+            exibirAvisoDeMorte("Fim da Run! Sua sanidade zerou. Reiniciando no Nível 1...");
+        } else {
+            exibirAvisoDeMorte("O tempo acabou! Você perdeu 1 de Sanidade. Reiniciando no Nível 1.");
+            run.resetarRunDaDerrota();
+        }
+        
+        tempoRestante = tempoMaximoDaRodada;
+        atualizarInterface();
+        timeline.play();
+    }
+
+    @FXML
+    void handleAbrirInventario(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Inventory.fxml"));
+        Parent root = loader.load();
+        
+        Inventory invCtrl = loader.getController();
+        invCtrl.setGameplayController(this);
+        
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Bolsa de Alice");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    public void adicionarTempoItem(int segundos) {
+        this.tempoRestante += segundos;
+        this.lblTimer.setText("Tempo: " + tempoRestante + "s");
+    }
+
+    private void irParaBoss(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Boss.fxml"));
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("O Confronto Final contra O Tempo");
+    }
+
+    @FXML void handleVoltarMenu(ActionEvent event) throws IOException {
+        if (timeline != null) timeline.stop();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+    }
+
+    private void exibirAvisoDeMorte(String msg) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
 }

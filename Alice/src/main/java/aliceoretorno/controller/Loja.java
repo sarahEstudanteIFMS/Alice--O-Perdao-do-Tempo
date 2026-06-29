@@ -1,6 +1,6 @@
 package aliceoretorno.controller;
 
-import aliceoretorno.dao.Jogador;
+import aliceoretorno.dao.JogadorDAO;
 import aliceoretorno.model.Partida;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ public class Loja {
 
     @FXML private Label lblMoedas;
     @FXML private Label lblMensagem;
-    private final Jogador jogador = new Jogador();
+    private final JogadorDAO jogador = new JogadorDAO();
 
     @FXML
     public void initialize() {

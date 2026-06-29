@@ -54,7 +54,7 @@ public class Boss {
             int scoreFinal = (run.getSanidadeAtual() * 200) + (run.getEngrenagensGanhasNaRun() * 10);
             ranking.salvarPontuacao(Partida.jogadorLogado.getId(), scoreFinal);
             
-            new aliceoretorno.dao.Jogador().actualizarProgresso(Partida.jogadorLogado);
+            new aliceoretorno.dao.JogadorDAO().actualizarProgresso(Partida.jogadorLogado);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Vitória!");

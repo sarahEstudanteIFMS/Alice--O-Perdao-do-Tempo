@@ -4,7 +4,7 @@ import aliceoretorno.config.DataBaseConfig;
 import aliceoretorno.model.Jogador;
 import java.sql.*;
 
-public class Jogador {
+public class JogadorDAO {
 
     public Jogador obterOuCriarJogador(String username) {
         String sqlSelect = "SELECT * FROM jogadores WHERE username = ?";
@@ -48,7 +48,7 @@ public class Jogador {
     }
 
     private Jogador mapRow(ResultSet rs) throws SQLException {
-        Jogador j = new Jogador();
+       Jogador j = new Jogador();
         j.setId(rs.getInt("id"));
         j.setUsername(rs.getString("username"));
         j.setEngrenagens(rs.getInt("engrenagens"));

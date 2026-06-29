@@ -12,7 +12,7 @@ public class Partida {
     private int nivelAtual;
     private int sanidadeAtual;
     private int engrenagensGanhasNaRun;
-    private int tempoExtraItens; // Unidades de item acumuladas
+    private int tempoExtraItens; 
     private final List<Enigma> enigmas = new ArrayList<>();
 
     public Partida() {

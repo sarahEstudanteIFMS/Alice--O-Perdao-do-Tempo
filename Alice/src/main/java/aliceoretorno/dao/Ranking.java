@@ -11,7 +11,7 @@ public class Ranking{
     public void salvarPontuacao(int jogadorId, int pontos) {
         String sql = "INSERT INTO ranking (jogador_id, pontuacao) VALUES (?, ?)";
         try (Connection conn = DataBaseConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, jogadorId);
             ps.setInt(2, pontos);
             ps.executeUpdate();

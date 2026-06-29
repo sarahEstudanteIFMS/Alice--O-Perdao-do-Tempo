@@ -1,6 +1,6 @@
 package aliceoretorno.controller;
 
-import aliceoretorno.dao.Jogador;
+import aliceoretorno.dao.JogadorDAO;
 import aliceoretorno.dao.Ranking;
 import aliceoretorno.model.Partida;
 import javafx.event.ActionEvent;
@@ -20,7 +20,7 @@ public class Upgrades {
     @FXML private Label lblStatusTempo;
     @FXML private ListView<String> listRanking;
 
-    private final Jogador jogador = new Jogador();
+    private final JogadorDAO jogador = new JogadorDAO();
     private final Ranking ranking = new Ranking();
 
     @FXML

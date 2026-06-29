@@ -1,6 +1,6 @@
 package aliceoretorno.controller;
 
-import aliceoretorno.dao.Jogador;
+import aliceoretorno.dao.JogadorDAO;
 import aliceoretorno.model.Jogador;
 import aliceoretorno.model.Partida;
 import javafx.application.Platform;
@@ -14,9 +14,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
-public class Menu{
+public class Menu {
 
-    private final Jogador jogador = new Jogador();
+    // 👉 CORREÇÃO 1: Mudamos de "Jogador" para "JogadorDAO", 
+    // pois é ele quem acessa o banco de dados.
+    private final JogadorDAO jogadorDAO = new JogadorDAO();
 
     @FXML
     void handleComecar(ActionEvent event) throws IOException {
@@ -28,7 +30,10 @@ public class Menu{
             Optional<String> result = dialog.showAndWait();
             
             if (result.isPresent() && !result.get().trim().isEmpty()) {
-                Partida.jogadorLogado = jogador.obterOuCriarJogador(result.get().trim());
+                // 👉 CORREÇÃO 2: Chamamos o método pelo jogadorDAO.
+                // (Nota: caso lá no seu DAO o método chame só "obterOuCriarJogador", 
+                // basta apagar o "DAO" do final do nome do método abaixo)
+               Partida.jogadorLogado = jogadorDAO.obterOuCriarJogador(result.get().trim());
             } else {
                 return;
             }

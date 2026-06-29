@@ -1,7 +1,9 @@
 module aliceoretorno.alice {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
-    opens aliceoretorno.model to javafx.fxml;
-    exports aliceoretorno.model;
+    exports aliceoretorno;
+    opens aliceoretorno to javafx.fxml;
+    opens aliceoretorno.controller to javafx.fxml;
 }
