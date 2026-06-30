@@ -2,6 +2,7 @@ package aliceoretorno.controller;
 
 import aliceoretorno.dao.JogadorDAO;
 import aliceoretorno.dao.Ranking;
+import aliceoretorno.model.Jogador;
 import aliceoretorno.model.Partida;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,19 +21,27 @@ public class Upgrades {
     @FXML private Label lblStatusTempo;
     @FXML private ListView<String> listRanking;
 
-    private final JogadorDAO jogador = new JogadorDAO();
+    private final JogadorDAO jogadorDAO = new JogadorDAO();
     private final Ranking ranking = new Ranking();
 
     @FXML
     public void initialize() {
+        // Guard: se por algum motivo chegar aqui sem jogador, mostra valores padrão
         atualizarLabels();
         carregarRanking();
     }
 
     private void atualizarLabels() {
-        lblPontosUpgrade.setText("Pontos Permanentes Disponíveis: " + Partida.jogadorLogado.getPontosUpgrade());
-        lblStatusSanidade.setText("Sanidade Inicial Base: " + Partida.jogadorLogado.getSanidadeMaxUpgrade() + " HP");
-        lblStatusTempo.setText("Tempo Base das Rodadas: " + Partida.jogadorLogado.getTempoBaseUpgrade() + "s");
+        Jogador j = Partida.jogadorLogado;
+        if (j == null) {
+            lblPontosUpgrade.setText("Pontos Permanentes Disponíveis: —");
+            lblStatusSanidade.setText("Sanidade Inicial Base: —");
+            lblStatusTempo.setText("Tempo Base das Rodadas: —");
+        } else {
+            lblPontosUpgrade.setText("Pontos Permanentes Disponíveis: " + j.getPontosUpgrade());
+            lblStatusSanidade.setText("Sanidade Inicial Base: " + j.getSanidadeMaxUpgrade() + " HP");
+            lblStatusTempo.setText("Tempo Base das Rodadas: " + j.getTempoBaseUpgrade() + "s");
+        }
     }
 
     private void carregarRanking() {
@@ -42,20 +51,24 @@ public class Upgrades {
 
     @FXML
     void handleUpgradeSanidade(ActionEvent event) {
-        if (Partida.jogadorLogado.getPontosUpgrade() >= 1) {
-            Partida.jogadorLogado.setPontosUpgrade(Partida.jogadorLogado.getPontosUpgrade() - 1);
-            Partida.jogadorLogado.setSanidadeMaxUpgrade(Partida.jogadorLogado.getSanidadeMaxUpgrade() + 1);
-            jogador.actualizarProgresso(Partida.jogadorLogado);
+        if (Partida.jogadorLogado == null) return;
+        Jogador j = Partida.jogadorLogado;
+        if (j.getPontosUpgrade() >= 1) {
+            j.setPontosUpgrade(j.getPontosUpgrade() - 1);
+            j.setSanidadeMaxUpgrade(j.getSanidadeMaxUpgrade() + 1);
+            jogadorDAO.actualizarProgresso(j);
             atualizarLabels();
         }
     }
 
     @FXML
     void handleUpgradeTempo(ActionEvent event) {
-        if (Partida.jogadorLogado.getPontosUpgrade() >= 1) {
-            Partida.jogadorLogado.setPontosUpgrade(Partida.jogadorLogado.getPontosUpgrade() - 1);
-            Partida.jogadorLogado.setTempoBaseUpgrade(Partida.jogadorLogado.getTempoBaseUpgrade() + 5);
-            jogador.actualizarProgresso(Partida.jogadorLogado);
+        if (Partida.jogadorLogado == null) return;
+        Jogador j = Partida.jogadorLogado;
+        if (j.getPontosUpgrade() >= 1) {
+            j.setPontosUpgrade(j.getPontosUpgrade() - 1);
+            j.setTempoBaseUpgrade(j.getTempoBaseUpgrade() + 5);
+            jogadorDAO.actualizarProgresso(j);
             atualizarLabels();
         }
     }

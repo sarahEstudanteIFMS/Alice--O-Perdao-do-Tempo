@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -32,7 +33,6 @@ public class Gameplay {
     public void initialize() {
         tempoMaximoDaRodada = Partida.jogadorLogado.getTempoBaseUpgrade();
         tempoRestante = tempoMaximoDaRodada;
-        
         atualizarInterface();
         inicializarTimer();
     }
@@ -43,12 +43,13 @@ public class Gameplay {
         lblSanidade.setText("Sanidade: " + run.getSanidadeAtual());
         lblEnigma.setText(run.getEnigmaAtual().getPergunta());
         txtResposta.clear();
+        txtResposta.setStyle("");
     }
 
     private void inicializarTimer() {
         if (timeline != null) timeline.stop();
         lblTimer.setText("Tempo: " + tempoRestante + "s");
-        
+
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             tempoRestante--;
             lblTimer.setText("Tempo: " + tempoRestante + "s");
@@ -65,24 +66,27 @@ public class Gameplay {
     void handleConfirmar(ActionEvent event) throws IOException {
         Partida run = Partida.runAtual;
         Enigma enigma = run.getEnigmaAtual();
-        
+
         if (enigma.validarResposta(txtResposta.getText())) {
             timeline.stop();
             int tempoGasto = tempoMaximoDaRodada - tempoRestante;
-            
+
+            // Premia agilidade: resposta correta em menos de 10s ganha Engrenagens
             if (tempoGasto < 10) {
-                run.somarEngrenagens(10); 
+                run.somarEngrenagens(10);
                 Partida.jogadorLogado.setEngrenagens(Partida.jogadorLogado.getEngrenagens() + 10);
             }
-            
+
             run.setNivelAtual(run.getNivelAtual() + 1);
-            
+
             if (run.getNivelAtual() == 5) {
+                // Nível 5 → Boss
                 irParaBoss(event);
             } else {
+                // Próximo nível — reset do timer
                 tempoRestante = tempoMaximoDaRodada;
                 atualizarInterface();
-                timeline.play();
+                inicializarTimer();
             }
         } else {
             txtResposta.setStyle("-fx-border-color: red; -fx-background-color: #ffcccc;");
@@ -92,28 +96,34 @@ public class Gameplay {
     private void processarDerrotaPorTempo() {
         Partida run = Partida.runAtual;
         run.setSanidadeAtual(run.getSanidadeAtual() - 1);
-        
+
         if (run.getSanidadeAtual() <= 0) {
+            // Permadeath da sessão
             run.resetarRunDaDerrota();
-            exibirAvisoDeMorte("Fim da Run! Sua sanidade zerou. Reiniciando no Nível 1...");
+            exibirAlerta(Alert.AlertType.ERROR,
+                "Fim da Run!",
+                "Sua sanidade zerou — O Tempo te consumiu!\nReiniciando no Nível 1...");
         } else {
-            exibirAvisoDeMorte("O tempo acabou! Você perdeu 1 de Sanidade. Reiniciando no Nível 1.");
+            // Perde sanidade mas continua a run desde o nível 1
             run.resetarRunDaDerrota();
+            exibirAlerta(Alert.AlertType.WARNING,
+                "Tempo Esgotado!",
+                "Você perdeu 1 de Sanidade.\nSanidade restante: " + run.getSanidadeAtual() + "\nReiniciando no Nível 1.");
         }
-        
+
         tempoRestante = tempoMaximoDaRodada;
         atualizarInterface();
-        timeline.play();
+        inicializarTimer();
     }
 
     @FXML
     void handleAbrirInventario(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Inventory.fxml"));
         Parent root = loader.load();
-        
+
         Inventory invCtrl = loader.getController();
         invCtrl.setGameplayController(this);
-        
+
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Bolsa de Alice");
@@ -121,29 +131,33 @@ public class Gameplay {
         stage.show();
     }
 
+    /** Chamado pelo Inventory para adicionar tempo ao timer em execução */
     public void adicionarTempoItem(int segundos) {
         this.tempoRestante += segundos;
         this.lblTimer.setText("Tempo: " + tempoRestante + "s");
     }
 
     private void irParaBoss(ActionEvent event) throws IOException {
+        if (timeline != null) timeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Boss.fxml"));
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.setTitle("O Confronto Final contra O Tempo");
     }
 
-    @FXML void handleVoltarMenu(ActionEvent event) throws IOException {
+    @FXML
+    void handleVoltarMenu(ActionEvent event) throws IOException {
         if (timeline != null) timeline.stop();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
     }
 
-    private void exibirAvisoDeMorte(String msg) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+    private void exibirAlerta(Alert.AlertType tipo, String titulo, String mensagem) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(msg);
+        alert.setContentText(mensagem);
         alert.showAndWait();
     }
 }

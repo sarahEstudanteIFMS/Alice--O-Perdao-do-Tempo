@@ -1,0 +1,15 @@
+aliceoretorno\dao\JogadorDAO.class
+aliceoretorno\dao\Ranking.class
+aliceoretorno\model\Jogador.class
+aliceoretorno\model\Enigma.class
+aliceoretorno\App.class
+aliceoretorno\controller\Boss.class
+aliceoretorno\controller\Creditos.class
+aliceoretorno\controller\Gameplay.class
+module-info.class
+aliceoretorno\controller\Upgrades.class
+aliceoretorno\model\Partida.class
+aliceoretorno\controller\Inventory.class
+aliceoretorno\config\DataBaseConfig.class
+aliceoretorno\controller\Menu.class
+aliceoretorno\controller\Loja.class

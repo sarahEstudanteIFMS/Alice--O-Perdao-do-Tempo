@@ -1,6 +1,7 @@
 package aliceoretorno.controller;
 
 import aliceoretorno.dao.JogadorDAO;
+import aliceoretorno.model.Jogador;
 import aliceoretorno.model.Partida;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,21 +16,28 @@ public class Loja {
 
     @FXML private Label lblMoedas;
     @FXML private Label lblMensagem;
-    private final JogadorDAO jogador = new JogadorDAO();
+    private final JogadorDAO jogadorDAO = new JogadorDAO();
 
     @FXML
     public void initialize() {
-        lblMoedas.setText("Engrenagens: " + Partida.jogadorLogado.getEngrenagens());
+        Jogador j = Partida.jogadorLogado;
+        lblMoedas.setText("Engrenagens: " + (j != null ? j.getEngrenagens() : 0));
     }
 
     @FXML
     void handleComprarTempo(ActionEvent event) {
-        if (Partida.jogadorLogado.getEngrenagens() >= 15) {
-            Partida.jogadorLogado.setEngrenagens(Partida.jogadorLogado.getEngrenagens() - 15);
-            Partida.runAtual.setTempoExtraItens(Partida.runAtual.getTempoExtraItens() + 1);
-            
-            jogador.actualizarProgresso(Partida.jogadorLogado);
-            lblMoedas.setText("Engrenagens: " + Partida.jogadorLogado.getEngrenagens());
+        if (Partida.jogadorLogado == null) {
+            lblMensagem.setText("Identifique-se primeiro (clique em Começar).");
+            return;
+        }
+        Jogador j = Partida.jogadorLogado;
+        if (j.getEngrenagens() >= 15) {
+            j.setEngrenagens(j.getEngrenagens() - 15);
+            if (Partida.runAtual != null) {
+                Partida.runAtual.setTempoExtraItens(Partida.runAtual.getTempoExtraItens() + 1);
+            }
+            jogadorDAO.actualizarProgresso(j);
+            lblMoedas.setText("Engrenagens: " + j.getEngrenagens());
             lblMensagem.setText("Item 'Tempo Extra' adicionado à sua Bolsa!");
         } else {
             lblMensagem.setText("Engrenagens insuficientes (Preço: 15).");
