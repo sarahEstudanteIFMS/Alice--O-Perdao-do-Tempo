@@ -19,6 +19,7 @@
         <Label fx:id="lblSanidade" text="Sanidade: 3"     style="-fx-text-fill: #ff8888; -fx-font-size: 14px;"/>
         <Label fx:id="lblTimer"    text="Tempo: 40s"      style="-fx-text-fill: #ffdd55; -fx-font-size: 14px; -fx-font-weight: bold;"/>
         <Label fx:id="lblDicas"    text="Dicas disponíveis: 0" style="-fx-text-fill: #88ccff; -fx-font-size: 14px;"/>
+        <Label fx:id="lblEngrenagens" text="Engrenagens: 0" style="-fx-text-fill: #ffdd55; -fx-font-size: 14px;"/>
     </HBox>
 
     <Label fx:id="lblEnigma" text="..."
@@ -30,12 +31,14 @@
                style="-fx-background-color: #2a1a3e; -fx-text-fill: white; -fx-prompt-text-fill: #888; -fx-border-color: #6a0dad; -fx-border-radius: 6; -fx-background-radius: 6;"/>
 
     <HBox spacing="12" alignment="CENTER">
-        <Button text="✔  Confirmar"       onAction="#handleConfirmar"       prefWidth="160"
+        <Button text="✔  Confirmar"       onAction="#handleConfirmar"       prefWidth="140"
                 style="-fx-background-color: #6a0dad; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
-        <Button fx:id="btnDica" text="💡  Usar Dica" onAction="#handleUsarDica" prefWidth="140"
+        <Button fx:id="btnDica" text="💡  Dica" onAction="#handleUsarDica" prefWidth="100"
                 style="-fx-background-color: #2a5d8a; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
-        <Button text="🎒  Abrir Bolsa"    onAction="#handleAbrirInventario" prefWidth="160"
+        <Button text="🎒  Bolsa"    onAction="#handleAbrirInventario" prefWidth="120"
                 style="-fx-background-color: #3d1a6e; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
+        <Button text="🛒  Loja"     onAction="#handleAbrirLoja" prefWidth="120"
+                style="-fx-background-color: #8a5d2a; -fx-text-fill: white; -fx-font-size: 13px; -fx-background-radius: 8;"/>
     </HBox>
 
     <Button text="↩  Voltar ao Menu" onAction="#handleVoltarMenu" prefWidth="180"

@@ -18,6 +18,14 @@ public class Loja {
     @FXML private Label lblMensagem;
     private final JogadorDAO jogadorDAO = new JogadorDAO();
 
+    // Quando != null, a Loja foi aberta DURANTE uma run (modal sobre o Gameplay).
+    // Nesse caso, o tempo comprado é aplicado direto no timer em andamento.
+    private Gameplay gameplayController;
+
+    public void setGameplayController(Gameplay ctrl) {
+        this.gameplayController = ctrl;
+    }
+
     @FXML
     public void initialize() {
         Jogador j = Partida.jogadorLogado;
@@ -33,12 +41,20 @@ public class Loja {
         Jogador j = Partida.jogadorLogado;
         if (j.getEngrenagens() >= 15) {
             j.setEngrenagens(j.getEngrenagens() - 15);
-            if (Partida.runAtual != null) {
-                Partida.runAtual.setTempoExtraItens(Partida.runAtual.getTempoExtraItens() + 1);
-            }
             jogadorDAO.actualizarProgresso(j);
             lblMoedas.setText("Engrenagens: " + j.getEngrenagens());
-            lblMensagem.setText("Item 'Tempo Extra' adicionado à sua Bolsa!");
+
+            if (gameplayController != null) {
+                // Comprado durante a run: aplica os +15s direto no cronômetro em andamento
+                gameplayController.adicionarTempoItem(15);
+                lblMensagem.setText("+15s adicionados ao seu tempo atual!");
+            } else if (Partida.runAtual != null) {
+                // Comprado fora da run (ex: pelo Menu): guarda na Bolsa para usar depois
+                Partida.runAtual.setTempoExtraItens(Partida.runAtual.getTempoExtraItens() + 1);
+                lblMensagem.setText("Item 'Tempo Extra' adicionado à sua Bolsa!");
+            } else {
+                lblMensagem.setText("Item 'Tempo Extra' comprado! Inicie uma run para usá-lo.");
+            }
         } else {
             lblMensagem.setText("Engrenagens insuficientes (Preço: 15).");
         }
@@ -46,6 +62,12 @@ public class Loja {
 
     @FXML
     void handleVoltar(ActionEvent event) throws IOException {
+        if (gameplayController != null) {
+            // Aberta como modal durante o jogo: apenas fecha a janela e retoma a partida
+            Stage stage = (Stage) lblMoedas.getScene().getWindow();
+            stage.close();
+            return;
+        }
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Menu.fxml"));
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));

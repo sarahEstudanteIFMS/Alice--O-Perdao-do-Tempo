@@ -25,6 +25,7 @@ public class Gameplay {
     @FXML private Label lblSanidade;
     @FXML private Label lblNivel;
     @FXML private Label lblDicas;
+    @FXML private Label lblEngrenagens;
     @FXML private TextField txtResposta;
     @FXML private Button btnDica;
 
@@ -69,6 +70,9 @@ public class Gameplay {
 
         if (lblDicas != null) {
             lblDicas.setText("Dicas disponíveis: " + dicasRestantesNaPergunta);
+        }
+        if (lblEngrenagens != null && Partida.jogadorLogado != null) {
+            lblEngrenagens.setText("Engrenagens: " + Partida.jogadorLogado.getEngrenagens());
         }
         if (btnDica != null) {
             btnDica.setDisable(dicasRestantesNaPergunta <= 0 || !enigma.temDica());
@@ -187,6 +191,31 @@ public class Gameplay {
     public void adicionarTempoItem(int segundos) {
         this.tempoRestante += segundos;
         this.lblTimer.setText("Tempo: " + tempoRestante + "s");
+    }
+
+    @FXML
+    void handleAbrirLoja(ActionEvent event) throws IOException {
+        // Pausa o cronômetro enquanto a Loja estiver aberta, para não punir o jogador
+        if (timeline != null) timeline.pause();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Loja.fxml"));
+        Parent root = loader.load();
+
+        Loja lojaCtrl = loader.getController();
+        lojaCtrl.setGameplayController(this);
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Bazar do Tempo");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+
+        // Retoma o cronômetro de onde parou (já refletindo eventual tempo extra comprado),
+        // sem limpar a resposta que o jogador já tinha digitado
+        if (lblEngrenagens != null && Partida.jogadorLogado != null) {
+            lblEngrenagens.setText("Engrenagens: " + Partida.jogadorLogado.getEngrenagens());
+        }
+        if (timeline != null) timeline.play();
     }
 
     private void irParaBoss(ActionEvent event) throws IOException {
